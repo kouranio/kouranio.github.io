@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="script.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+  <body>
+    <div id="main">
+      <div id="container-left">
+        <div id="cv-div">
+          <div id="didiv">
+            <canvas id="canvas" width="500" height="500"></canvas>
+          </div>
+        </div>
+       
+      </div>
+  
+      <div id="container-right">
+        <!-- <button id="updateBTN">Draw</button> --> 
+        <!--<button id="playersBTN">get Last Players</button> -->
+        <div class="module">
+          <a class="pstart">Identification</a>
+            <input class="pstart" type="text" id="textInput" placeholder="id Ã  remplir" value="8c3d6b9a"></input>
+        </div>
+
+        <div class="module">
+          <a  class="pstart">Équipe</a>
+          <select id="teamLIST" style="width:100px;" class="pstart">
+            <option value="1">team 1</option>
+            <option value="2">team 2</option>
+            <option value="3">team 3</option>
+            <option value="4">team 4</option>
+          </select>
+          <button id="teamBTN"  class="pstart">choisir équipe</button>
+        </div>
+        
+          
+        <div class="module">
+          <a  class="pstart">Dessin</a>
+          <div>
+            <input type="color" id="pixelColor" name="pixel color picker" value="#e66465" />
+          </div>
+          <progress value="0" max="15000" id="timeLeft"></progress>
+          </div>
+  
+      
+      </div>
+      <div id="log-text" class="logs pstart">
+        <a>Dernier message</a>
+      </div>
+
+      <p id="players"></p>
+    </div>
+    
+
+      
+  </body>
+
+</html>
+
