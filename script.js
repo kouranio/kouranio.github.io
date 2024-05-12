@@ -67,7 +67,7 @@ const getTimeLeft = async () => {
 }
 
 //GET THE LAST PLAYERS
-export const getLastPlayers = () => {
+const getLastPlayers = () => {
   
   fetch(`${serveur}/liste-joueurs?uid=8c3d6b9a`)
   .then(response => {
@@ -138,7 +138,7 @@ const chooseTeam = () => {
 };
 
 //SEND A PIXEL
- const sendPixel = async (x,y) => {
+const sendPixel = async (x,y) => {
   const formData = {
     uid: idInput.value,
     col: x,
@@ -221,7 +221,7 @@ const  addRow = (name,team,bann,temps,pixels) => {
 }
 
 //GET THE CURSOR POSITION
-function getCursorPosition(canvas, event) {
+const getCursorPosition = (canvas, event) => {
   //a bit groofy but it looks like it works very well
   const rect = canvas.getBoundingClientRect()
   const xPos = event.clientX - rect.left
@@ -233,7 +233,7 @@ function getCursorPosition(canvas, event) {
 }
 
 //COUNTDOWN FUNCTION
-function countDown(sec) {
+const countDown = (sec)  => {
   var timeleft = sec;
 //gets the time left and starts the countdown
   var downloadTimer = setInterval(function(){

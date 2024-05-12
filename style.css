@@ -1,69 +1,28 @@
 body {
     margin: 0;
     padding: 0;
-
 }
 
+/* ids*/ 
 #main {
     margin: 20px;
-    /*background-color: lightgreen;*/
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-
 }
 
-#container-left {
+#container-up {
     display: flex;
-    justify-content: center;
-    /*background-color: lightblue;*/
-    
+    justify-content: center;    
 }
 
-#container-right {
+#container-down {
     margin-top: 30px;
     display: flex;
     flex-direction: row;
-    /*background-color: lightcoral;*/
     justify-content: space-around;
     padding: 10px;
     
-}
-.module {
-    display: flex  ;
-    justify-content: space-between;
-    flex-direction: column;
-    align-items: center;
-    background-color: pink;
-    border-radius: 20px;
-    border:5px solid black;
-    padding:20px;   
-    font-size: 20px;
-}
-
-#fs-draw {
-    /*background-color: rebeccapurple;*/
-    display: flex  ;
-    flex-direction: column;
-    align-items: center;
-}
-
-
-#cv-div {
-    margin: 0;
-    padding: 0;
-}
-
-#didiv {
-    margin: 0;
-    border: 10px solid black;
-    padding: 0;
-}
-
-.pstart {
-    font-family: "Press Start 2P", system-ui;
-    font-weight: 200;
-    font-style: normal;
 }
 
 #teamBTN {
@@ -76,6 +35,35 @@ body {
     margin-top: 10px;
 }
 
+#cdiv {
+    margin: 0;
+    border: 10px solid black;
+    padding: 0;
+    /*i don't know WHY there is a gap under the canvas*/
+}
+
+/* classes */
+
+.pstart-font {
+    font-family: "Press Start 2P", system-ui;
+    font-weight: 200;
+    font-style: normal;
+}
+
+
+.module {
+    display: flex  ;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    background-color: pink;
+    border-radius: 20px;
+    border:5px solid black;
+    padding:20px;   
+    font-size: 20px;
+}
+
+
 .logs {
     background-color: lightgray;
     padding-left: 5px;
@@ -84,7 +72,7 @@ body {
     margin-top: 5px;
 }
 
-/*NIGGER TABLE SHIT*/
+/*all relative to the table*/
 
 table {
     margin-top: 20px;
@@ -94,24 +82,22 @@ table {
     letter-spacing: 1px;
 
   }
-  
 
-
-  th,
-  td {
+th,
+td {
     border: 1px solid rgb(160 160 160);
     padding: 8px 10px;
-    
-  }
-  
-  td{
-    text-align: center;
-  }
-  
-  thead > tr:nth-of-type(even) {
-    background-color: pink;
-  }
 
-  thead > tr:first-child {
+}
+
+td{
+    text-align: center;
+}
+
+thead > tr:nth-of-type(even) {
+    background-color: pink;
+}
+
+thead > tr:first-child {
     background-color: rgb(255, 110, 233);
-  }
+}
