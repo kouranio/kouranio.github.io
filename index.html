@@ -10,42 +10,51 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin >
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" >
   </head>
+
+
   <body>
     <div id="main">
-      <div id="container-left">
-        <div id="cv-div">
-          <div id="didiv">
+      <!-- top part : pixels -->
+      <div id="container-up">
+
+          <div id="cdiv">
             <canvas id="canvas" width="500" height="500"></canvas>
           </div>
-        </div>
+
       </div>
-      <div id="container-right">
+
+      <!-- bottom part : configuration -->
+      <div id="container-down">
         <div class="module">
-          <a class="pstart">Identification</a>
-          <input class="pstart" type="text" id="textInput" placeholder="id à remplir" value="8c3d6b9a" >
+          <a class="pstart-font">Identification</a>
+          <input class="pstart-font" type="text" id="textInput" placeholder="id à remplir" value="8c3d6b9a" >
         </div>
         <div class="module">
-          <a class="pstart">Équipe</a>
-          <select id="teamLIST" style="width:100px;" class="pstart">
+          <a class="pstart-font">Équipe</a>
+          <select id="teamLIST" style="width:100px;" class="pstart-font">
             <option value="1">team 1</option>
             <option value="2">team 2</option>
             <option value="3">team 3</option>
             <option value="4">team 4</option>
           </select>
-          <button id="teamBTN" class="pstart">choisir équipe</button>
+          <button id="teamBTN" class="pstart-font">choisir équipe</button>
         </div>
         <div class="module">
-          <a class="pstart">Dessin</a>
+          <a class="pstart-font">Dessin</a>
           <div>
             <input type="color" id="pixelColor" name="pixel color picker" value="#ffffff" >
           </div>
           <progress value="0" max="15000" id="timeLeft"></progress>
         </div>
       </div>
-      <div id="log-text" class="logs pstart">
+
+      <!-- logs -->
+      <div id="log-text" class="logs pstart-font">
         <a>Dernier message</a>
       </div>
-      <table id="stats" class="pstart">
+
+      <!-- stats -->
+      <table id="stats" class="pstart-font">
         <thead>
           <tr>
             <th scope="col">NOM</th>
@@ -59,6 +68,7 @@
           <!-- users data should be here -->
         </tbody>
       </table>
+
     </div>
   </body>
 </html>
