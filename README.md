@@ -21,3 +21,4 @@ L'utilisateur doit entrer son UID (ou le remplacer par celui déjà existant), c
 
 - attribution d'une couleur par équipe dans le tableau
 - tri du tableau par pose récente / équipe / ordre alphabétique / nombre de pixels posés 
+- mise en évidece du curseur sur le pixel potentiel sur le tableau pour une meilleure compréhension (surbrillance, loupe)
