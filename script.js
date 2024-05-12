@@ -1,27 +1,24 @@
-let canvas = document.getElementById('canvas');
-let ctx = canvas.getContext('2d');
+//HTML ELEMENTS
 
-
-
-let p = document.getElementById('players');
-let teamList = document.getElementById('teamLIST');
-let idInput = document.getElementById('textInput');
-let colorPicker = document.getElementById('pixelColor');
-let progressBar = document.getElementById("timeLeft");
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const teamList = document.getElementById('teamLIST');
+const idInput = document.getElementById('textInput');
+const colorPicker = document.getElementById('pixelColor');
+const progressBar = document.getElementById("timeLeft");
 const serveur = "https://pixel-api.codenestedu.fr";
-//const sendButton = document.getElementById("sendBTN");
-//const updateButton = document.getElementById("updateBTN");
-const playersButton = document.getElementById("playersBTN");
 const chooseTeamButton = document.getElementById("teamBTN");
 const logText = document.getElementById("log-text");
+const table = document.getElementById("stats");
 
 
-var table = document.getElementById("stats");
+//=======================================================
+//API CALLS 
 
 //GET THE TAB
 const getTab = () => {
   
-  fetch(`https://pixel-api.codenestedu.fr/tableau`)
+  fetch(`${serveur}/tableau`)
   .then(response => {
     if (!response.ok) {
       return response.json().then(data => {
@@ -32,7 +29,7 @@ const getTab = () => {
   })
 
   .then(data => {
-    //console.log("updated");
+    //fills the canvas with the data
     for (let i = 0; i<data.length; i++){
       for (let j = 0; j<data[i].length; j++){
         ctx.fillStyle = data[i][j];
@@ -42,47 +39,37 @@ const getTab = () => {
   })
 
   .catch(error => {
-    //alert(error.message);
-    console.error('Erreur lors de la récupération des données :', error);
+    console.error('Erreur lors de la récupération du tableau :', error);
   });
 }
 
+//GET THE TIME LEFT
 const getTimeLeft = async () => {
   fetch(`${serveur}/temps-attente?uid=${idInput.value}`)
-    //si on arrive ici (la première étape de la gestion de la réponse du serveur)
-    //on teste si on n'a pas eu une erreur retournée 
     .then(response => {
-      //si erreur 404
       if (!response.ok) {
-        //il faut analyser le json retourner par le serveur {"error":"Year not found"}
         return response.json().then(data => {
-          //ce throw est récupéré par la catch un peu plus bas
           throw new Error(data.error);
         });
       }
-      //si pas d'erreur alors le json est "retournée" au then juste en dessous
       return  response.json();
     })
-    //si on arrive ici (la seconde étape de la gestion de la réponse du serveur)
-    //on peut traiter sans crainte cette réponse
     .then(data => {
       setTimeout(function(){
-        console.log('Réponse du serveur:', data);
-        console.log("temps restant récupéré depuis getTimeLeft " + data["tempsAttente"]);
+        //starts the countdown
         countDown(data["tempsAttente"]);
       }, 100);  
 
     })
     .catch(error => {
-      //alert(error.message);
-      console.error('Erreur lors de la récupération des données :', error);
+      console.error('Erreur lors de la récupération du temps restant :', error);
     });
 }
 
-
+//GET THE LAST PLAYERS
 export const getLastPlayers = () => {
   
-  fetch(`https://pixel-api.codenestedu.fr/liste-joueurs?uid=8c3d6b9a`)
+  fetch(`${serveur}/liste-joueurs?uid=8c3d6b9a`)
   .then(response => {
     if (!response.ok) {
       return response.json().then(data => {
@@ -93,112 +80,43 @@ export const getLastPlayers = () => {
   })
 
   .then(data => {
-    //console.log(data);
-    //p.innerHTML = "";
-    console.log(table.rows.length);
-    
-    //table.getElementsByTagName("tbody")[0].innerHTML = table.rows[0].innerHTML;
+    //Clears the table before filling it again...
     clearTable(table);
-    //$table.find("tr:gt(0)").remove();
 
-    //table.deleteRow(0);
-    
     data.forEach( (player) => {
-      let date = new Date(player.lastModificationPixel);
-      const d = new Date();
-      let day = d.getUTCDate();
-      let diff = ((d.getTime()-date.getTime())/1000)
-      //var pd = document.createElement('p');
-      //pd.innerHTML = player.nom + " " + player.equipe + " " + player.banned + " " + Math.trunc(diff) + " " + player.nbPixelsModifies;
-      ajouteLigne(player.nom,player.equipe,player.banned,Math.trunc(diff),player.nbPixelsModifies);
-      //p.appendChild(pd);
-      ;
+      //gets and parses the raw data to show it in the table
+      const date = new Date(player.lastModificationPixel);
+      const now = new Date();
+      const diff = ((now.getTime()-date.getTime())/1000)
+      addRow(player.nom,player.equipe,player.banned,Math.trunc(diff),player.nbPixelsModifies);
     });
-    /*
-    let player = data[0];
-    console.log(player);
-    
-    let date = new Date(player.lastModificationPixel);
-    */
-    //console.log(date.toDateString());
-    
   })
 
   .catch(error => {
-    //alert(error.message);
-    console.error('Erreur lors de la récupération des données :', error);
+    console.error('Erreur lors de la récupération des joueurs :', error);
   });
 }
 
+//CHOOSE A TEAM
+const chooseTeam = () => {
 
-function clearTable(table) {
-  var rows = table.rows;
-  var i = rows.length;
-  while (--i) {
-    rows[i].parentNode.removeChild(rows[i]);
-    // or
-    // table.deleteRow(i);
-  }
-}
-
-function ajouteLigne(name,team,bann,temps,pixels) {
-  // Récupération d'une référence à la table
-
-
-  // Insère une ligne dans la table à l'indice de ligne 0
-  var nouvelleLigne = table.insertRow(-1);
-
-  // Insère une cellule dans la ligne à l'indice 0
-  var pixCell = nouvelleLigne.insertCell(0);
-  var timeCell = nouvelleLigne.insertCell(0);
-  var banCell = nouvelleLigne.insertCell(0);
-  var teamCell = nouvelleLigne.insertCell(0);
-  var nameCell = nouvelleLigne.insertCell(0);
-  
-  // Ajoute un nœud texte à la cellule
-  var textNote = document.createTextNode(name);
-  var teamNode = document.createTextNode(team);
-  let banNode = document.createTextNode(bann);
-  let timeNode = document.createTextNode(temps);
-  let pixNode = document.createTextNode(pixels);
-
-  banCell.appendChild(banNode);
-  timeCell.appendChild(timeNode);
-  pixCell.appendChild(pixNode);
-  teamCell.appendChild(teamNode);
-  nameCell.appendChild(textNote);
-
-
-
-
-
-}
-
-export const chooseTeam = () => {
-
-  //console.log(idInput.value);
   const formData = {
-    uid: idInput.value,
-    nouvelleEquipe: parseInt(teamList.value)
-};
-  //console.log(formData);
-  //console.log(idInput.value);
-  //requete POST
+  uid: idInput.value,
+  nouvelleEquipe: parseInt(teamList.value)
+  };
+
   fetch(`${serveur}/choisir-equipe`, {
     method: 'PUT',
     headers: {
         'Content-Type': 'application/json'
     },
-    //le données sont associées à la requete
     
     body: JSON.stringify(formData)
 })
-
-
   .then(response => {
-      //si le serveur a répondu une erreur
       if (!response.ok) {
         return response.json().then(data => {
+          //changes the log text to show the error
           logText.innerHTML = data["msg"];
           logText.style.backgroundColor = "red";
           throw new Error(data.error);
@@ -208,8 +126,7 @@ export const chooseTeam = () => {
     return response.json();
 })
   .then(data => {
-      //si tout s'est bien passé
-      console.log('Réponse du serveur::', data);
+      //changes the log text to show the success
       logText.innerHTML = data["msg"];
       logText.style.backgroundColor = "green";
       getTimeLeft()
@@ -220,6 +137,7 @@ export const chooseTeam = () => {
   });
 };
 
+//SEND A PIXEL
  const sendPixel = async (x,y) => {
   const formData = {
     uid: idInput.value,
@@ -227,14 +145,12 @@ export const chooseTeam = () => {
     row: y,
     color: colorPicker.value
   };
-  console.log(formData);
-  console.log(idInput.value);
+
   fetch(`${serveur}/modifier-case`, {
     method: 'PUT',
     headers: {
         'Content-Type': 'application/json'
     },
-    //le données sont associées à la requete
     body: JSON.stringify(formData)
 })
   .then(response => {
@@ -251,49 +167,90 @@ export const chooseTeam = () => {
     return response.json();
 })
   .then(data => {
-      //si tout s'est bien passé
-      console.log('Réponse du serveur:', data);
+      logText.innerHTML = data["msg"];
+      logText.style.backgroundColor = "green";
       getTimeLeft();
 
   })
   .catch(error => {
-      console.log('Erreur lors de l\' envoi du pixel ', error);
+      console.log('Erreur lors de l\' envoi du pixel : ', error);
   });
 
 
 };
 
-function getCursorPosition(canvas, event) {
-  const rect = canvas.getBoundingClientRect()
-  const x = event.clientX - rect.left
-  const y = event.clientY - rect.top
-  console.log("x: " + Math.floor(x/5) + " y: " + Math.floor(y/5))
-  return [Math.floor(x/5), Math.floor(y/5)]
+//=======================================================
+//DOM MANIPULATION
+
+//CLEAR THE TABLE 
+const  clearTable = (table)  => {
+  var rows = table.rows;
+  var i = rows.length;
+  while (--i) {
+    rows[i].parentNode.removeChild(rows[i]);
+    // or
+    // table.deleteRow(i);
+  }
 }
 
+//ADD A ROW TO THE TABLE
+const  addRow = (name,team,bann,temps,pixels) => {
+  // adds a row under the first row (header)
+  var newLine = table.insertRow(-1);
+
+  //adds cells to the row (order is important)
+  var pixCell = newLine.insertCell(0);
+  var timeCell = newLine.insertCell(0);
+  var banCell = newLine.insertCell(0);
+  var teamCell = newLine.insertCell(0);
+  var nameCell = newLine.insertCell(0);
+  
+  // fills the cells with the data
+  var textNote = document.createTextNode(name);
+  var teamNode = document.createTextNode(team);
+  let banNode = document.createTextNode(bann);
+  let timeNode = document.createTextNode(temps);
+  let pixNode = document.createTextNode(pixels);
+
+  //appends the data to the cells
+  banCell.appendChild(banNode);
+  timeCell.appendChild(timeNode);
+  pixCell.appendChild(pixNode);
+  teamCell.appendChild(teamNode);
+  nameCell.appendChild(textNote);
+}
+
+//GET THE CURSOR POSITION
+function getCursorPosition(canvas, event) {
+  //a bit groofy but it looks like it works very well
+  const rect = canvas.getBoundingClientRect()
+  const xPos = event.clientX - rect.left
+  const yPos = event.clientY - rect.top
+  const xScale = Math.floor(xPos/5)
+  const yScale =  Math.floor(yPos/5)
+
+  return [xScale,yScale]
+}
+
+//COUNTDOWN FUNCTION
 function countDown(sec) {
   var timeleft = sec;
-  console.log(typeof(timeleft))
-  console.log("temps restant : " + timeleft);
+//gets the time left and starts the countdown
   var downloadTimer = setInterval(function(){
     if(timeleft <= 0){
       clearInterval(downloadTimer);
     }
     progressBar.value = 15000 - timeleft;
-    //console.log("valeur de la barre : " + progressBar.value);
     timeleft -= 100;
   }, 100);
 }
 
-
-
-
+//=======================================================
+//EVENT LISTENERS
 
 chooseTeamButton.addEventListener("click", () => {
   chooseTeam();
 });
-
-
 
 canvas.addEventListener('mousedown', async (e) => {
   let pos = getCursorPosition(canvas, e)
@@ -304,8 +261,9 @@ canvas.addEventListener('mousedown', async (e) => {
   }, 100);  
 })
 
+//=======================================================
 
 
 window.onload = getTab;
-const timeID = setInterval(getTab, 1000);
-const lastPlayers = setInterval(getLastPlayers, 1000);
+setInterval(getTab, 1000);
+setInterval(getLastPlayers, 1000);
