@@ -15,6 +15,9 @@ const playersButton = document.getElementById("playersBTN");
 const chooseTeamButton = document.getElementById("teamBTN");
 const logText = document.getElementById("log-text");
 
+
+var table = document.getElementById("stats");
+
 //GET THE TAB
 const getTab = () => {
   
@@ -39,7 +42,7 @@ const getTab = () => {
   })
 
   .catch(error => {
-    alert(error.message);
+    //alert(error.message);
     console.error('Erreur lors de la récupération des données :', error);
   });
 }
@@ -71,7 +74,7 @@ const getTimeLeft = async () => {
 
     })
     .catch(error => {
-      alert(error.message);
+      //alert(error.message);
       console.error('Erreur lors de la récupération des données :', error);
     });
 }
@@ -91,16 +94,24 @@ export const getLastPlayers = () => {
 
   .then(data => {
     //console.log(data);
-    p.innerHTML = "";
+    //p.innerHTML = "";
+    console.log(table.rows.length);
+    
+    //table.getElementsByTagName("tbody")[0].innerHTML = table.rows[0].innerHTML;
+    clearTable(table);
+    //$table.find("tr:gt(0)").remove();
+
+    //table.deleteRow(0);
+    
     data.forEach( (player) => {
       let date = new Date(player.lastModificationPixel);
       const d = new Date();
       let day = d.getUTCDate();
       let diff = ((d.getTime()-date.getTime())/1000)
-      var pd = document.createElement('p');
-      pd.innerHTML = player.nom + " \r\n" + player.equipe + " " + player.banned + " " + Math.trunc(diff) + " " + player.nbPixelsModifies;
-
-      p.appendChild(pd);
+      //var pd = document.createElement('p');
+      //pd.innerHTML = player.nom + " " + player.equipe + " " + player.banned + " " + Math.trunc(diff) + " " + player.nbPixelsModifies;
+      ajouteLigne(player.nom,player.equipe,player.banned,Math.trunc(diff),player.nbPixelsModifies);
+      //p.appendChild(pd);
       ;
     });
     /*
@@ -114,11 +125,54 @@ export const getLastPlayers = () => {
   })
 
   .catch(error => {
-    alert(error.message);
+    //alert(error.message);
     console.error('Erreur lors de la récupération des données :', error);
   });
 }
 
+
+function clearTable(table) {
+  var rows = table.rows;
+  var i = rows.length;
+  while (--i) {
+    rows[i].parentNode.removeChild(rows[i]);
+    // or
+    // table.deleteRow(i);
+  }
+}
+
+function ajouteLigne(name,team,bann,temps,pixels) {
+  // Récupération d'une référence à la table
+
+
+  // Insère une ligne dans la table à l'indice de ligne 0
+  var nouvelleLigne = table.insertRow(-1);
+
+  // Insère une cellule dans la ligne à l'indice 0
+  var pixCell = nouvelleLigne.insertCell(0);
+  var timeCell = nouvelleLigne.insertCell(0);
+  var banCell = nouvelleLigne.insertCell(0);
+  var teamCell = nouvelleLigne.insertCell(0);
+  var nameCell = nouvelleLigne.insertCell(0);
+  
+  // Ajoute un nœud texte à la cellule
+  var textNote = document.createTextNode(name);
+  var teamNode = document.createTextNode(team);
+  let banNode = document.createTextNode(bann);
+  let timeNode = document.createTextNode(temps);
+  let pixNode = document.createTextNode(pixels);
+
+  banCell.appendChild(banNode);
+  timeCell.appendChild(timeNode);
+  pixCell.appendChild(pixNode);
+  teamCell.appendChild(teamNode);
+  nameCell.appendChild(textNote);
+
+
+
+
+
+}
 
 export const chooseTeam = () => {
 

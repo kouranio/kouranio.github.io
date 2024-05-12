@@ -81,4 +81,37 @@ body {
     padding-left: 5px;
     padding: 10px;
     border-radius: 13px;
+    margin-top: 5px;
 }
+
+/*NIGGER TABLE SHIT*/
+
+table {
+    margin-top: 20px;
+    border-collapse: collapse;
+    border: 2px solid rgb(0, 0, 0);
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+
+  }
+  
+
+
+  th,
+  td {
+    border: 1px solid rgb(160 160 160);
+    padding: 8px 10px;
+    
+  }
+  
+  td{
+    text-align: center;
+  }
+  
+  thead > tr:nth-of-type(even) {
+    background-color: pink;
+  }
+
+  thead > tr:first-child {
+    background-color: rgb(255, 110, 233);
+  }
